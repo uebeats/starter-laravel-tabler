@@ -22,6 +22,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
+// Route::group(['middleware' => 'auth'], function () {
+//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// });
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:landlord'])->group(function () {
+    Route::get('/dashboard/landlord', [DashboardController::class, 'index'])->name('dashboard.landlord');
+});
+
+Route::middleware(['auth', 'role:tenant'])->group(function () {
+    Route::get('/dashboard/tenant', [DashboardController::class, 'index'])->name('dashboard.tenant');
 });
